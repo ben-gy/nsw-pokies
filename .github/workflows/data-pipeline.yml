@@ -2,8 +2,8 @@ name: Data Pipeline
 
 on:
   schedule:
-    # NSW quarterly data lands a few times a year; refresh weekly (Mondays 18:17 UTC).
-    - cron: '17 18 * * 1'
+    # Cadence: quarterly (NSW data lands a few times a year)
+    - cron: '17 18 6 1,4,7,10 *'
   workflow_dispatch:
   push:
     branches: [main]
