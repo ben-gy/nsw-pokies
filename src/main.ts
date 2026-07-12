@@ -3,6 +3,7 @@ import './styles.css';
 import type { PokiesData, Sector, Metric, ViewId, Area } from './types';
 import { SECTOR_LABEL } from './analysis';
 import { initGlossary, openAbout } from './ui';
+import { initTooltip } from './tooltip';
 import {
   renderLeaderboard, renderTrend, renderTable, renderTreemap,
   renderDistribution, renderInsights, kpiStrip, type ViewCtx,
@@ -122,7 +123,7 @@ function shell(): string {
           <div class="search-box">
             <input id="search" type="search" placeholder="Find your council…" aria-label="Search council areas" autocomplete="off" />
           </div>
-          <button class="icon-btn" id="aboutBtn" aria-label="About this site" title="About & data sources">?</button>
+          <button class="icon-btn" id="aboutBtn" aria-label="About & data sources" data-tip="About & data sources">?</button>
         </div>
       </div>
     </header>
@@ -196,6 +197,7 @@ async function boot(): Promise<void> {
   }
   loadPrefs();
   initGlossary();
+  initTooltip();
   app.removeAttribute('aria-busy');
   app.innerHTML = shell();
   wire();

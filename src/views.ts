@@ -19,14 +19,14 @@ export interface ViewCtx {
 function sectorBadge(a: Area): string {
   if (a.hasClubs && a.hasHotels) return '';
   const label = a.hasClubs ? 'Clubs only' : 'Hotels only';
-  return `<span class="badge badge-partial" title="Reported by Liquor & Gaming NSW as a single-sector group">${label}</span>`;
+  return `<span class="badge badge-partial" data-tip="Reported by Liquor & Gaming NSW as a single-sector group" aria-label="Reported by Liquor & Gaming NSW as a single-sector group">${label}</span>`;
 }
 
 function yoyPill(a: Area): string {
   if (a.yoyPct == null) return '';
   const cls = a.yoyPct > 0 ? 'up' : a.yoyPct < 0 ? 'down' : 'flat';
   const arrow = a.yoyPct > 0 ? '▲' : a.yoyPct < 0 ? '▼' : '■';
-  return `<span class="yoy yoy-${cls}" title="Change vs previous year">${arrow} ${signedPct(a.yoyPct)}</span>`;
+  return `<span class="yoy yoy-${cls}" data-tip="Change vs previous year: ${signedPct(a.yoyPct)}" aria-label="Change vs previous year: ${signedPct(a.yoyPct)}">${arrow} ${signedPct(a.yoyPct)}</span>`;
 }
 
 // ---- Leaderboard ----------------------------------------------------------
@@ -44,12 +44,13 @@ export function renderLeaderboard(root: HTMLElement, ctx: ViewCtx): void {
     const w = Math.max(1.5, (v / max) * 100);
     const aboveMed = v >= med;
     const secondary = metric === 'perAdult' ? money(sectorLoss(a, sector)) : (sectorPerAdult(a, sector) == null ? '—' : dollars(sectorPerAdult(a, sector)) + '/adult');
+    const barTip = `${a.name}: ${metric === 'perAdult' ? dollars(v) + '/adult' : money(v)} · ${secondary}`;
     return `
       <button class="lb-row" data-slug="${a.slug}" aria-label="${esc(a.name)} details">
         <span class="lb-rank">${i + 1}</span>
         <span class="lb-main">
           <span class="lb-name">${esc(a.name)} ${sectorBadge(a)}</span>
-          <span class="lb-bar-wrap"><span class="lb-bar ${aboveMed ? 'hot' : 'cool'}" style="width:${w.toFixed(1)}%"></span></span>
+          <span class="lb-bar-wrap" data-tip="${esc(barTip)}"><span class="lb-bar ${aboveMed ? 'hot' : 'cool'}" style="width:${w.toFixed(1)}%"></span></span>
         </span>
         <span class="lb-val">
           <span class="lb-primary">${metric === 'perAdult' ? dollars(v) : money(v)}</span>
@@ -94,9 +95,9 @@ export function renderTrend(root: HTMLElement, ctx: ViewCtx): void {
   const bars = periods.map((p) => {
     const ch = (p.clubs / maxBar) * 100;
     const ho = (p.hotels / maxBar) * 100;
-    return `<div class="tb-col"><div class="tb-stack" title="${esc(p.label)}: ${money(p.combined)}">
-        <div class="tb-seg tb-hotels" style="height:${ho.toFixed(1)}%"></div>
-        <div class="tb-seg tb-clubs" style="height:${ch.toFixed(1)}%"></div>
+    return `<div class="tb-col"><div class="tb-stack" data-tip="${esc(p.label)}: ${money(p.combined)}" aria-label="${esc(p.label)}: ${money(p.combined)}">
+        <div class="tb-seg tb-hotels" style="height:${ho.toFixed(1)}%" data-tip="${esc(p.label)} hotels: ${money(p.hotels)}" aria-label="${esc(p.label)} hotels: ${money(p.hotels)}"></div>
+        <div class="tb-seg tb-clubs" style="height:${ch.toFixed(1)}%" data-tip="${esc(p.label)} clubs: ${money(p.clubs)}" aria-label="${esc(p.label)} clubs: ${money(p.clubs)}"></div>
       </div><div class="tb-lab">${esc(p.label)}</div><div class="tb-tot">${money(p.combined)}</div></div>`;
   }).join('');
 
@@ -212,7 +213,8 @@ export function renderTreemap(root: HTMLElement, ctx: ViewCtx): void {
       ? `<text x="${(r.x + 6).toFixed(1)}" y="${(r.y + 16).toFixed(1)}" class="tm-name ${dark ? 'on-dark' : ''}">${esc(a.name.length > 22 ? a.name.slice(0, 20) + '…' : a.name)}</text>
          <text x="${(r.x + 6).toFixed(1)}" y="${(r.y + 31).toFixed(1)}" class="tm-val ${dark ? 'on-dark' : ''}">${esc(money(sectorLoss(a, sector)))}</text>`
       : '';
-    return `<g class="tm-cell" data-slug="${a.slug}"><rect x="${r.x.toFixed(1)}" y="${r.y.toFixed(1)}" width="${Math.max(0, r.w - 1).toFixed(1)}" height="${Math.max(0, r.h - 1).toFixed(1)}" fill="${fill}" rx="2"><title>${esc(a.name)}: ${money(sectorLoss(a, sector))}${pa != null ? ' · ' + dollars(pa) + '/adult' : ''}</title></rect>${label}</g>`;
+    const tip = `${esc(a.name)}: ${money(sectorLoss(a, sector))}${pa != null ? ' · ' + dollars(pa) + '/adult' : ''}`;
+    return `<g class="tm-cell" data-slug="${a.slug}" data-tip="${tip}" aria-label="${tip}"><rect x="${r.x.toFixed(1)}" y="${r.y.toFixed(1)}" width="${Math.max(0, r.w - 1).toFixed(1)}" height="${Math.max(0, r.h - 1).toFixed(1)}" fill="${fill}" rx="2"/>${label}</g>`;
   }).join('');
 
   root.innerHTML = `
@@ -244,7 +246,8 @@ export function renderDistribution(root: HTMLElement, ctx: ViewCtx): void {
     const x = m.left + i * bw;
     const y = m.top + ih - h;
     const hot = b.x0 >= p90;
-    return `<g><rect x="${(x + 2).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw - 4).toFixed(1)}" height="${h.toFixed(1)}" fill="${hot ? '#b91c1c' : '#0f766e'}" rx="2"><title>${dollars(b.x0)}–${dollars(b.x1)} per adult: ${b.count} area${b.count === 1 ? '' : 's'}</title></rect>
+    const tip = `${dollars(b.x0)}–${dollars(b.x1)} per adult: ${b.count} area${b.count === 1 ? '' : 's'}`;
+    return `<g data-tip="${tip}" aria-label="${tip}"><rect x="${(x + 2).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw - 4).toFixed(1)}" height="${h.toFixed(1)}" fill="${hot ? '#b91c1c' : '#0f766e'}" rx="2"/>
       ${b.count ? `<text x="${(x + bw / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle" class="hist-n">${b.count}</text>` : ''}</g>`;
   }).join('');
   const axis = bins.filter((_, i) => i % 2 === 0).map((b, i) => {

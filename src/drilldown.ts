@@ -24,7 +24,7 @@ export function openDrilldown(area: Area, data: PokiesData, onClose: () => void)
   const hist = area.history;
   const spark = hist.length > 1
     ? `<div class="dd-trend">
-         ${sparklineSVG(hist.map((h) => h.combined), '#0f766e', 260, 60)}
+         ${sparklineSVG(hist.map((h) => h.combined), '#0f766e', 260, 60, hist.map((h) => `${h.key}: ${money(h.combined)}`))}
          <div class="dd-trend-axis"><span>${esc(hist[0].key)}</span><span>${esc(hist[hist.length - 1].key)}</span></div>
        </div>`
     : '<p class="muted">Not enough history for a trend (grouping changed between years).</p>';
@@ -57,8 +57,8 @@ export function openDrilldown(area: Area, data: PokiesData, onClose: () => void)
 
         <div class="dd-split">
           <div class="dd-split-bar">
-            <div class="dd-seg dd-clubs" style="width:${clubsPct.toFixed(1)}%" title="Clubs ${money(area.clubs)}"></div>
-            <div class="dd-seg dd-hotels" style="width:${hotelsPct.toFixed(1)}%" title="Hotels ${money(area.hotels)}"></div>
+            <div class="dd-seg dd-clubs" style="width:${clubsPct.toFixed(1)}%" data-tip="Clubs ${money(area.clubs)} (${clubsPct.toFixed(0)}%)" aria-label="Clubs ${money(area.clubs)} (${clubsPct.toFixed(0)}%)"></div>
+            <div class="dd-seg dd-hotels" style="width:${hotelsPct.toFixed(1)}%" data-tip="Hotels ${money(area.hotels)} (${hotelsPct.toFixed(0)}%)" aria-label="Hotels ${money(area.hotels)} (${hotelsPct.toFixed(0)}%)"></div>
           </div>
           <div class="dd-split-key">
             <span><span class="sw sw-clubs"></span>${gloss('clubs', 'Clubs')} ${money(area.clubs)} (${clubsPct.toFixed(0)}%)</span>

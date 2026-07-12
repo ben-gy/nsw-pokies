@@ -25,19 +25,19 @@ export function squarify(values: number[], width: number, height: number): Rect[
     const sum = r.reduce((a, b) => a + b.area, 0);
     const vertical = w >= h; // fill along the shorter side
     if (vertical) {
-      const rw = sum / h;
+      const rw = h > 0 ? sum / h : 0;
       let cy = y;
       for (const it of r) {
-        const rh = it.area / rw;
+        const rh = rw > 0 ? it.area / rw : 0;
         rects[it.index] = { x, y: cy, w: rw, h: rh, index: it.index };
         cy += rh;
       }
       x += rw; w -= rw;
     } else {
-      const rh = sum / w;
+      const rh = w > 0 ? sum / w : 0;
       let cx = x;
       for (const it of r) {
-        const rwid = it.area / rh;
+        const rwid = rh > 0 ? it.area / rh : 0;
         rects[it.index] = { x: cx, y, w: rwid, h: rh, index: it.index };
         cx += rwid;
       }
@@ -97,20 +97,26 @@ export function trendSVG(
     const d = s.points.map((v, i) => `${i ? 'L' : 'M'}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
     paths += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
     paths += s.points
-      .map((v, i) => `<circle cx="${xOf(i).toFixed(1)}" cy="${yOf(v).toFixed(1)}" r="3.5" fill="${s.color}"><title>${esc(s.label)} — ${esc(xLabels[i])}: ${esc(opts.yFmt(v))}</title></circle>`)
+      .map((v, i) => {
+        const tip = `${esc(s.label)} — ${esc(xLabels[i])}: ${esc(opts.yFmt(v))}`;
+        return `<circle cx="${xOf(i).toFixed(1)}" cy="${yOf(v).toFixed(1)}" r="3.5" fill="${s.color}" data-tip="${tip}" aria-label="${tip}"/>`;
+      })
       .join('');
   }
   return `<svg viewBox="0 0 ${W} ${H}" class="chart-svg" role="img" preserveAspectRatio="xMidYMid meet">${g}${xa}${paths}</svg>`;
 }
 
-/** Compact sparkline for the drill-down panel. */
-export function sparklineSVG(points: number[], color: string, width = 240, height = 56): string {
+/** Compact sparkline for the drill-down panel. Optional per-point tooltip texts. */
+export function sparklineSVG(points: number[], color: string, width = 240, height = 56, tips?: string[]): string {
   if (!points.length) return '';
   const max = Math.max(1, ...points);
   const min = Math.min(...points, 0);
   const xOf = (i: number) => (points.length === 1 ? width / 2 : (i / (points.length - 1)) * (width - 6) + 3);
   const yOf = (v: number) => height - 4 - ((v - min) / (max - min || 1)) * (height - 8);
   const d = points.map((v, i) => `${i ? 'L' : 'M'}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
-  const dots = points.map((v, i) => `<circle cx="${xOf(i).toFixed(1)}" cy="${yOf(v).toFixed(1)}" r="2.4" fill="${color}"/>`).join('');
+  const dots = points.map((v, i) => {
+    const tip = tips?.[i] ? ` data-tip="${esc(tips[i])}" aria-label="${esc(tips[i])}"` : '';
+    return `<circle cx="${xOf(i).toFixed(1)}" cy="${yOf(v).toFixed(1)}" r="2.4" fill="${color}"${tip}/>`;
+  }).join('');
   return `<svg viewBox="0 0 ${width} ${height}" class="spark" preserveAspectRatio="none">${`<path d="${d}" fill="none" stroke="${color}" stroke-width="2"/>`}${dots}</svg>`;
 }
