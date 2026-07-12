@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nsw-pokies.benrichardson.dev/sitemap.xml

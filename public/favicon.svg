@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pokies Losses NSW">
+  <rect width="64" height="64" rx="13" fill="#0f766e"/>
+  <rect x="13" y="14" width="38" height="27" rx="4" fill="#ecfdf5"/>
+  <rect x="17" y="19" width="9" height="17" rx="2" fill="#0f766e" opacity="0.16"/>
+  <rect x="27.5" y="19" width="9" height="17" rx="2" fill="#0f766e" opacity="0.16"/>
+  <rect x="38" y="19" width="9" height="17" rx="2" fill="#0f766e" opacity="0.16"/>
+  <text x="32" y="32.5" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="700" text-anchor="middle" fill="#b91c1c">7 7 7</text>
+  <path d="M32 44 L32 55 M32 55 L26 49 M32 55 L38 49" stroke="#dc2626" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
