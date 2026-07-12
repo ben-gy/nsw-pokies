@@ -154,7 +154,7 @@ function shell(): string {
           Source: <span class="nolink">${data.meta.source}</span>. Boundaries: ${data.meta.boundaries.replace(/,.*/, '')}.
         </div>
         <div class="foot-help">Gambling harm support: <strong>National Gambling Helpline 1800 858 858</strong> · gamblinghelponline.org.au</div>
-        <div class="foot-by">Built by <a href="https://benrichardson.dev/" target="_blank" rel="noopener">benrichardson.dev</a> · <a href="https://hub.benrichardson.dev" target="_blank" rel="noopener">more tools &amp; sites</a> · Data ${new Date(data.meta.generatedAt).toLocaleDateString('en-AU', { month: 'short', year: 'numeric' })}</div>
+        <div class="foot-by">Built by <a href="https://benrichardson.dev/" target="_blank" rel="noopener">benrichardson.dev</a> · <a href="https://sites.benrichardson.dev" target="_blank" rel="noopener">more tools &amp; sites</a> · Data ${new Date(data.meta.generatedAt).toLocaleDateString('en-AU', { month: 'short', year: 'numeric' })}</div>
       </div>
     </footer>`;
 }
