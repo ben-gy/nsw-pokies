@@ -1,3 +1,8 @@
+// feedback:begin (managed by hub/scripts/feedback/backfill.mjs)
+import { mountFeedback } from './feedback';
+mountFeedback();
+// feedback:end
+
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
 import type { PokiesData, Sector, Metric, ViewId, Area } from './types';
