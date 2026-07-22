@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // Number and currency formatting helpers (AU locale).
 
 /** Abbreviated money: 9_059_000_000 -> "$9.06bn", 766_000_000 -> "$766M", 12_300 -> "$12.3k". */

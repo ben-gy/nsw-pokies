@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // Download the raw NSW gaming-machine (pokies) LGA reports + LGA boundaries.
 // Writes XLSX files and a simplified GeoJSON into pipeline/raw/, ready for aggregate.mjs.
 // Source: Liquor & Gaming NSW gaming machine data reports (public, no auth).

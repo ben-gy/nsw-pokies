@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // Leaflet choropleth of NSW LGAs coloured by the selected metric.
 import L from 'leaflet';
 import type { Area, Sector, Metric } from './types';

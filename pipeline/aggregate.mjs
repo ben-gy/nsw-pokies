@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // Aggregate NSW gaming-machine (pokies) XLSX reports into the site's data file.
 // Reads raw XLSX from pipeline/raw/ and a simplified LGA GeoJSON, writes:
 //   public/data/pokies.json   (all metrics, per-LGA + statewide trend + insights)

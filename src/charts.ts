@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // Hand-rolled SVG chart builders. Pure string/geometry functions — no DOM, no libs.
 
 export interface Rect { x: number; y: number; w: number; h: number; index: number }
